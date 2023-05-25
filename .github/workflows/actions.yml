@@ -2,7 +2,10 @@ name: Scrape website
 
 on:
   push:
-    branches: [ main, action-test, docker-cache ]
+    branches: 
+      - main
+  schedule:     
+    - cron: '0 0 * * 0'
 
 jobs:
   scrape-website:
