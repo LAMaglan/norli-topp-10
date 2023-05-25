@@ -4,8 +4,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 import pandas as pd
 
-url = "https://www.norli.no/boker/aktuelt-og-anbefalt/topplister/topp-10-boker"
-
 
 def set_chrome_options() -> Options:
     """Sets chrome options for Selenium.
@@ -52,6 +50,7 @@ def main():
     """ Run all """
     driver = webdriver.Chrome(options=set_chrome_options())
 
+    url = "https://www.norli.no/boker/aktuelt-og-anbefalt/topplister/topp-10-boker"
     driver.get(url)
 
     html = driver.page_source
