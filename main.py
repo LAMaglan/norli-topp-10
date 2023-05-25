@@ -1,3 +1,4 @@
+import os.path
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from selenium.webdriver.chrome.options import Options
@@ -36,18 +37,31 @@ def parse_webpage(soup):
     return author_list, book_list
 
 
-def create_csv_file(author_list, book_list):
+def create_csv_file(author_list, book_list, old_file_exists, old_file, filepath):
     """Create csv-file from parsed webpage"""
     data = {"author": author_list, "title": book_list,
             "rank": list(range(1, len(book_list)+1))}
 
     data_pd = pd.DataFrame.from_dict(data)
 
-    data_pd.to_csv('output/topp-10-norli.csv', index=False)
+    if not old_file_exists:
+        data_pd.to_csv(filepath, index=False)
+    else:
+        if not old_file.equals(data_pd):
+            data_pd.to_csv(filepath, index=False)
 
 
 def main():
     """ Run all """
+    output_filepath = "output/topp-10-norli.csv"
+
+    if os.path.isfile(output_filepath):
+        old_file_exists = True
+        old_file = pd.read_csv(output_filepath)
+    else:
+        old_file_exists = False
+        old_file = ""
+
     driver = webdriver.Chrome(options=set_chrome_options())
 
     url = "https://www.norli.no/boker/aktuelt-og-anbefalt/topplister/topp-10-boker"
@@ -57,7 +71,9 @@ def main():
     soup = BeautifulSoup(html, "html.parser")
 
     author_list, book_list = parse_webpage(soup)
-    create_csv_file(author_list, book_list)
+
+    create_csv_file(author_list, book_list, old_file_exists,
+                    old_file, filepath=output_filepath)
 
     driver.close()
 
