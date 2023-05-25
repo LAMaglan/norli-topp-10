@@ -1,0 +1,22 @@
+name: Scrape website
+
+on:
+  push:
+    branches: [ main, action-test ]
+
+jobs:
+  scrape-website:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Build docker image
+        run: docker build -t scrape-norli .
+
+      - name: Scrape websites with container
+        run: docker run -v $PWD/output:/output scrape-norli
+
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
