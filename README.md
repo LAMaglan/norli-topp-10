@@ -3,5 +3,5 @@ To run with docker locally, do
 
 ```bash
 docker build -t <chosen name of container> .
-docker run -v $PWD/output:/output <chosen name of container>```
+docker run -v $PWD/output:/output <chosen name of container>
 ```
