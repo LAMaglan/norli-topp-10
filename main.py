@@ -20,6 +20,10 @@ def set_chrome_options() -> Options:
     return chrome_options
 
 
+class EmptyDataException(Exception):
+    pass
+
+
 def parse_webpage(soup):
     """ Get title and author details"""
 
@@ -28,6 +32,10 @@ def parse_webpage(soup):
 
     author_list = [author.get_text() for author in all_authors]
     book_list = [book.get_text() for book in all_books]
+
+    if not author_list or not book_list:
+        raise EmptyDataException(
+            "Something wrong with book or author lists (likely no data)")
 
     return author_list, book_list
 
