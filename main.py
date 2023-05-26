@@ -20,19 +20,22 @@ def set_chrome_options() -> Options:
     return chrome_options
 
 
+class EmptyDataException(Exception):
+    pass
+
+
 def parse_webpage(soup):
     """ Get title and author details"""
 
     all_books = soup.find_all("a", class_="itemNorli-name-2Vz")
     all_authors = soup.find_all("div", class_="itemNorli-authorName-1ZR")
 
-    author_list = []
-    for author in all_authors:
-        author_list.append(author.get_text())
+    author_list = [author.get_text() for author in all_authors]
+    book_list = [book.get_text() for book in all_books]
 
-    book_list = []
-    for book in all_books:
-        book_list.append(book.get_text())
+    if not author_list or not book_list:
+        raise EmptyDataException(
+            "Something wrong with book or author lists (likely no data)")
 
     return author_list, book_list
 
