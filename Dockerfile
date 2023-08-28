@@ -20,7 +20,10 @@ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable 
 RUN apt-get -y update
 
 # Magic happens
-RUN apt-get install -y google-chrome-stable
+ARG CHROME_VERSION="114.0.5735.106-1"
+RUN wget --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb \
+  && apt install -y /tmp/chrome.deb \
+  && rm /tmp/chrome.deb
 
 # Installing Unzip
 RUN apt-get install -yqq unzip
