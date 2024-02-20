@@ -8,7 +8,7 @@ RUN mkdir /output
 COPY requirements.txt .
 
 # Install the required Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the Python script to the container
 COPY main.py .
