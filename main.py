@@ -7,8 +7,18 @@ import pandas as pd
 class EmptyDataException(Exception):
     pass
 
+
 def parse_wesbite(url=None, payload=None):
     response = requests.post(url, data=json.dumps(payload))
+
+    if response.status_code != 200:
+        raise EmptyDataException(
+            f'''
+            The HTTP response is {response.status_code},
+            which might be an issue with runner on
+            Github Actions
+            '''
+        )
 
     # Assuming response.content contains the JSON string,
     # convert the bytes to a string
